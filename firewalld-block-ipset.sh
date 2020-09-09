@@ -1,4 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
 
 # Get script root directory, solution courtesy of Dave Dopson via (https://stackoverflow.com/a/246128)
 SOURCE="${BASH_SOURCE[0]}"
