@@ -13,12 +13,21 @@ while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symli
 done
 SCRIPT_DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
 
-## Setup Firewalld
-firewall-cmd --permanent --zone=drop --remove-source=ipset:blocklist_v4
-firewall-cmd --permanent --zone=drop --remove-source=ipset:blocklist_v6
-firewall-cmd --reload
-firewall-cmd --permanent --delete-ipset=blocklist_v4
-firewall-cmd --permanent --delete-ipset=blocklist_v6
+## Remove and delete blocklist_v4 ipset if it exists
+if firewall-cmd --permanent --get-ipsets | grep -q "blocklist_v4"; then
+  firewall-cmd --permanent --zone=drop --remove-source=ipset:blocklist_v4
+  firewall-cmd --reload
+  firewall-cmd --permanent --delete-ipset=blocklist_v4
+fi
+
+## Remove and delete blocklist_v6 ipset if it exists
+if firewall-cmd --permanent --get-ipsets | grep -q "blocklist_v6"; then
+  firewall-cmd --permanent --zone=drop --remove-source=ipset:blocklist_v6
+  firewall-cmd --reload
+  firewall-cmd --permanent --delete-ipset=blocklist_v6
+fi
+
+## Create ipsets
 firewall-cmd --reload
 firewall-cmd --permanent --new-ipset=blocklist_v4 --type=hash:net --option=family=inet --option=hashsize=4096 --option=maxelem=200000
 firewall-cmd --permanent --new-ipset=blocklist_v6 --type=hash:net --option=family=inet6 --option=hashsize=4096 --option=maxelem=200000
