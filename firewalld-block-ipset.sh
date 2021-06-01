@@ -39,11 +39,15 @@ mkdir -pv $SCRIPT_DIR/zones
 cd $SCRIPT_DIR/zones/
 for n in $(cat ../index.txt)
 do
-        wget https://www.ipdeny.com/ipv6/ipaddresses/aggregated/$n-aggregated.zone
-        wget https://www.ipdeny.com/ipblocks/data/countries/$n.zone
-        echo "bye-bye $n"
-        firewall-cmd --permanent --ipset=blocklist_v4 --add-entries-from-file="$n.zone"
-        firewall-cmd --permanent --ipset=blocklist_v6 --add-entries-from-file="$n-aggregated.zone"
+        r6=`wget https://www.ipdeny.com/ipv6/ipaddresses/aggregated/${n,,}-aggregated.zone 2>&1 | awk '/^  HTTP/{print $2}'`
+        r4=`wget https://www.ipdeny.com/ipblocks/data/countries/${n,,}.zone 2>&1 | awk '/^  HTTP/{print $2}'`
+        echo "bye-bye ${n,,}"
+        if [[ $r6 == "200" ]]; then
+          firewall-cmd --permanent --ipset=blocklist_v6 --add-entries-from-file="${n,,}-aggregated.zone"
+        fi
+        if [[ $r4 == "200" ]]; then
+          firewall-cmd --permanent --ipset=blocklist_v4 --add-entries-from-file="${n,,}.zone"
+        fi
 done
 
 ## Re-add the sources back to the drop zone
