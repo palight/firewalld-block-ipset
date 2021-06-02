@@ -39,8 +39,8 @@ mkdir -pv $SCRIPT_DIR/zones
 cd $SCRIPT_DIR/zones/
 for n in $(cat ../index.txt)
 do
-        r6=`wget https://www.ipdeny.com/ipv6/ipaddresses/aggregated/${n,,}-aggregated.zone 2>&1 | awk '/^  HTTP/{print $2}'`
-        r4=`wget https://www.ipdeny.com/ipblocks/data/countries/${n,,}.zone 2>&1 | awk '/^  HTTP/{print $2}'`
+        r6=`wget --no-check-certificate --server-response https://www.ipdeny.com/ipv6/ipaddresses/aggregated/${n,,}-aggregated.zone 2>&1 | awk '/^  HTTP/{print $2}'`
+        r4=`wget --no-check-certificate --server-response https://www.ipdeny.com/ipblocks/data/countries/${n,,}.zone 2>&1 | awk '/^  HTTP/{print $2}'`
         echo "bye-bye ${n,,}"
         if [[ $r6 == "200" ]]; then
           firewall-cmd --permanent --ipset=blocklist_v6 --add-entries-from-file="${n,,}-aggregated.zone"
