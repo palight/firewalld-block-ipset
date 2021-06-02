@@ -37,19 +37,27 @@ firewall-cmd --reload
 rm -rfv $SCRIPT_DIR/zones
 mkdir -pv $SCRIPT_DIR/zones
 cd $SCRIPT_DIR/zones/
+## Turn off pipefail temporarily as we need to continue through missing zones
+set +o pipefail
 for n in $(cat ../index.txt)
 do
         r6=`wget --no-check-certificate --server-response https://www.ipdeny.com/ipv6/ipaddresses/aggregated/${n,,}-aggregated.zone 2>&1 | awk '/^  HTTP/{print $2}'`
         r4=`wget --no-check-certificate --server-response https://www.ipdeny.com/ipblocks/data/countries/${n,,}.zone 2>&1 | awk '/^  HTTP/{print $2}'`
-        echo "bye-bye ${n,,}"
+        
         if [[ $r6 == "200" ]]; then
+          echo "bye-bye ${n,,} on ipv6"
           firewall-cmd --permanent --ipset=blocklist_v6 --add-entries-from-file="${n,,}-aggregated.zone"
+        else
+          echo "could not find country code: ${n,,} for ipv6"
         fi
         if [[ $r4 == "200" ]]; then
+          echo "bye-bye ${n,,} on ipv4"
           firewall-cmd --permanent --ipset=blocklist_v4 --add-entries-from-file="${n,,}.zone"
+        else  
+          echo "could not find country code: ${n,,} for ipv4"
         fi
 done
-
+set -o pipefail
 ## Re-add the sources back to the drop zone
 firewall-cmd --permanent --zone=drop --add-source=ipset:blocklist_v4
 firewall-cmd --permanent --zone=drop --add-source=ipset:blocklist_v6
