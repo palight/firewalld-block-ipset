@@ -14,6 +14,7 @@ done
 SCRIPT_DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
 
 ## Remove and delete blocklist_v4 ipset if it exists
+## Edit service name to match your needs. if several services are needed, you can repeat the line several times.
 if firewall-cmd --permanent --get-ipsets | grep -q "blocklist_v4"; then
 firewall-cmd --permanent --zone=drop --remove-rich-rule='rule family="ipv4" source ipset="blocklist_v4" service name="imaps" drop'
   firewall-cmd --reload
@@ -21,6 +22,7 @@ firewall-cmd --permanent --zone=drop --remove-rich-rule='rule family="ipv4" sour
 fi
 
 ## Remove and delete blocklist_v6 ipset if it exists
+## Edit service name to match your needs. if several services are needed, you can repeat the line several times
 if firewall-cmd --permanent --get-ipsets | grep -q "blocklist_v6"; then
 firewall-cmd --permanent --zone=drop --add-rich-rule='rule family="ipv6" source ipset="blocklist_v6" service name="imaps" drop'
   firewall-cmd --reload
@@ -59,6 +61,7 @@ do
 done
 set -o pipefail
 ## Re-add the sources back to the drop zone
+## Edit service name to match your needs. if several services are needed, you can repeat this lines several times
 firewall-cmd --permanent --zone=drop --add-rich-rule='rule family="ipv4" source ipset="blocklist_v4" service name="imaps" drop'
 firewall-cmd --permanent --zone=drop --add-rich-rule='rule family="ipv6" source ipset="blocklist_v6" service name="imaps" drop'
 
