@@ -11,7 +11,7 @@
 * ???
 
 ## Usage:
-first edit the script to adapt the list of services for witch ou want to block the countries and the zone.
+first edit the script to adapt the list of services for witch ou want to block the countries and the zone. for a list of services, uses firewall-cmd --get-services
 ```
 /bin/bash firewalld-block-ipset.sh
 ```
