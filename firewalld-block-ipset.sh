@@ -43,8 +43,8 @@ cd $SCRIPT_DIR/zones/
 set +o pipefail
 for n in $(cat ../index.txt)
 do
-#escape lines starting with # so you can let the entire name of the country behind
-       if [[ ${n,,} =~ ^#.* ]]
+#escape lines starting with # so you can let the entire name of the country behind the name can't have a space in it.
+       if [[ ${n} =~ ^#.* ]]
         then
                 continue
         fi
