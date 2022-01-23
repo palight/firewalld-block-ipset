@@ -20,7 +20,7 @@ Note that the first time you run this, you may get some errors with firewalld. T
 ## Description:
 Got a lot of bots and random connections coming to your server? Want to block an entire country to mitigate the problem? You've come to the right place! 
 
-Use this script to block known ipv4 and ipv6 ranges associated with the countries you don't want to access your systems. Before running the script, get a list together of country codes via https://www.ipdeny.com/ipblocks/ and place them in a file called 'index.txt' in the same working directory as the script itself. Then, run however you see fit. Could be used to update ipset lists automagically via cron! Have fun, and block responsibly.
+Use this script to block known ipv4 and ipv6 ranges associated with the countries you don't want to access your systems. Before running the script, get a list together of country codes via https://www.ipdeny.com/ipblocks/ and place them in a file called 'index.txt' in the same working directory as the script itself (a complete list of countries is provided in this repo, but not maintained update). Then, run however you see fit. Could be used to update ipset lists automagically via cron! Have fun, and block responsibly.
 
 This pairs nicely with fail2ban -- I personally run both this script in a cron job and have fail2ban monitoring my imaps or https connections for repeat offenders. This greatly reduced the threat-pool by outright blocking some common offenders.
 
