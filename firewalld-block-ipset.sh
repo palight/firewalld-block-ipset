@@ -24,7 +24,7 @@ fi
 ## Remove and delete blocklist_v6 ipset if it exists
 ## Edit service name to match your needs. if several services are needed, you can repeat the line several times
 if firewall-cmd --permanent --get-ipsets | grep -q "blocklist_v6"; then
-firewall-cmd --permanent --zone=drop --add-rich-rule='rule family="ipv6" source ipset="blocklist_v6" service name="imaps" drop'
+firewall-cmd --permanent --zone=drop --remove-rich-rule='rule family="ipv6" source ipset="blocklist_v6" service name="imaps" drop'
   firewall-cmd --reload
   firewall-cmd --permanent --delete-ipset=blocklist_v6
 fi
