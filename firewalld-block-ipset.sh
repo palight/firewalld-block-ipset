@@ -31,8 +31,8 @@ fi
 
 ## Create ipsets
 firewall-cmd --reload
-firewall-cmd --permanent --new-ipset=blocklist_v4 --type=hash:net --option=family=inet --option=hashsize=4096 --option=maxelem=200000
-firewall-cmd --permanent --new-ipset=blocklist_v6 --type=hash:net --option=family=inet6 --option=hashsize=4096 --option=maxelem=200000
+firewall-cmd --permanent --new-ipset=blocklist_v4 --type=hash:net --option=family=inet --option=maxelem=2000000
+firewall-cmd --permanent --new-ipset=blocklist_v6 --type=hash:net --option=family=inet6 --option=maxelem=2000000
 firewall-cmd --reload
 
 ## Get our intelligence (sources from ipdeny.com) and block them!                                                                                                                                                                            ## Note that the following lines will create a 'zones' directory within the $SCRIPT_DIR and populate it with textfiles from ipdeny.com
